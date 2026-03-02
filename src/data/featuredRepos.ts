@@ -14,7 +14,7 @@ export const featuredRepos: FeaturedRepoConfig[] = [
     highlight: "Semantic search · RAG · txtai · Python — Dissertation project",
   },
   {
-    name: "portfolio",
+    name: "My-Portfolio",
     pinOrder: 2,
     customTitle: "This Portfolio",
     highlight: "Next.js App Router · TypeScript · Tailwind CSS",
