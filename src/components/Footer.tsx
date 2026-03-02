@@ -26,12 +26,12 @@ export function Footer() {
           >
             LinkedIn
           </Link>
-          <a
-            href={siteConfig.links.email}
+          <Link
+            href="/contact"
             className="hover:text-gray-300 transition-colors"
           >
             Email
-          </a>
+          </Link>
         </nav>
       </div>
     </footer>

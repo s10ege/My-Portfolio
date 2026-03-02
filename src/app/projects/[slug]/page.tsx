@@ -91,11 +91,11 @@ export default async function ProjectDetailPage({
         )}
 
         {/* Links */}
-        {(project.links.github || project.links.demo || project.links.article) && (
+        {(project.links?.github || project.links?.demo || project.links?.article) && (
           <div className="flex flex-wrap gap-3 mt-6">
-            {project.links.github && (
+            {project.links?.github && (
               <Link
-                href={project.links.github}
+                href={project.links?.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm text-gray-300 hover:text-white hover:border-white/30 transition-colors"
@@ -103,9 +103,9 @@ export default async function ProjectDetailPage({
                 GitHub ↗
               </Link>
             )}
-            {project.links.demo && (
+            {project.links?.demo && (
               <Link
-                href={project.links.demo}
+                href={project.links?.demo}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition-colors"
@@ -113,9 +113,9 @@ export default async function ProjectDetailPage({
                 Live Demo ↗
               </Link>
             )}
-            {project.links.article && (
+            {project.links?.article && (
               <Link
-                href={project.links.article}
+                href={project.links?.article}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm text-gray-300 hover:text-white hover:border-white/30 transition-colors"

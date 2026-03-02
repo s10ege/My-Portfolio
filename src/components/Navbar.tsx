@@ -6,6 +6,7 @@ const navLinks = [
   { href: "/repos", label: "Repos" },
   { href: "/technologies", label: "Tech" },
   { href: "/resume", label: "Resume" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Navbar() {
