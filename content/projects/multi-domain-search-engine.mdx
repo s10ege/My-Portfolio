@@ -1,0 +1,72 @@
+---
+slug: multi-domain-search-engine
+title: Multi-Domain Search Engine
+tagline: A semantic search engine and RAG system that retrieves and reasons over documents across multiple domains — built as a dissertation project.
+date: "2026-03"
+stack:
+  - Python
+  - txtai
+  - sentence-transformers
+  - BM25
+  - pandas
+  - pytest
+role: Solo — Research & Engineering
+status: In Progress
+highlights:
+  - Semantic search powered by dense vector embeddings (sentence-transformers)
+  - Hybrid retrieval combining vector similarity with BM25 keyword scoring
+  - RAG pipeline for AI-generated answers grounded in indexed documents
+  - Domain-scoped filtering to restrict queries to specific knowledge domains
+  - 71 tests with 89% coverage across the retrieval and QA pipeline
+links:
+  github: https://github.com/s10ege/Multi-Domain-Search-Engine
+---
+
+## Background
+
+This project is my dissertation — an ongoing research effort exploring how semantic search and retrieval-augmented generation (RAG) can be combined to build a domain-aware question-answering system. It is currently a work in progress; the core retrieval pipeline is functional but the full multi-domain orchestration and frontend interface are still under active development.
+
+## Problem
+
+Keyword-based search breaks down the moment a user expresses a query differently from how a document was written. Two sentences can mean the same thing and share zero words in common. Traditional search engines fail here — they match tokens, not intent. The goal of this project is to build a search engine that understands *meaning*, not just text, and can answer questions by reasoning over the retrieved evidence rather than just returning a list of links.
+
+## Approach
+
+The system is built around [txtai](https://github.com/neuml/txtai), a lightweight semantic search library that wraps sentence-transformers and a vector index. Documents are embedded into a dense vector space at indexing time. At query time, the user's input is embedded into the same space and the nearest neighbours are retrieved by cosine similarity.
+
+To improve retrieval precision, a **hybrid scoring** strategy blends vector similarity with BM25 — a classic keyword-frequency algorithm. This means the engine performs well on both conceptual queries ("explain gradient descent") and specific lookup queries ("what is the Adam optimizer's default learning rate").
+
+The **RAG mode** takes retrieved passages and feeds them into a generative model to produce a grounded, coherent answer — rather than forcing the user to read raw document chunks.
+
+**Domain filtering** is a first-class feature: queries can be scoped to a specific subdomain of the index, preventing irrelevant results from bleeding in across topic boundaries.
+
+## Architecture
+
+```
+backend/
+  src/
+    client.py         ← CLI entrypoint (search / answer / summarise)
+    retriever.py      ← Hybrid BM25 + vector retrieval
+    rag.py            ← Retrieval-augmented answer generation
+    domain_filter.py  ← Per-domain index scoping
+    indexer.py        ← Document ingestion and embedding pipeline
+  test/               ← 71 tests, 89% coverage
+embeddings/           ← Pre-built txtai index (persisted to disk)
+final_data.csv        ← Source dataset
+```
+
+The pipeline is intentionally modular — the retriever, RAG layer, and domain filter are independent components that can be swapped or extended without touching each other.
+
+## Current Status
+
+The core retrieval and RAG pipeline is fully implemented and tested. What remains:
+- Multi-domain orchestration (routing queries across dynamically loaded domain indices)
+- A web interface to replace the current CLI
+- Evaluation against standard IR benchmarks (BEIR / TREC)
+- Dissertation write-up and formal evaluation
+
+This project is expected to be completed and submitted as part of my final year dissertation.
+
+## Learnings
+
+Building a search engine reveals how much nuance lives inside the word "relevance." Vector similarity is powerful but not infallible — it can surface semantically adjacent documents that are contextually wrong. Hybrid retrieval is a significant improvement, but tuning the blend between dense and sparse scores is non-trivial. The 89% test coverage was essential: retrieval bugs are subtle and often only surface on edge-case queries, not happy-path inputs.

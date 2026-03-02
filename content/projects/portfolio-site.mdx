@@ -1,0 +1,60 @@
+---
+slug: portfolio-site
+title: Portfolio Website
+tagline: A fast, minimal portfolio built with Next.js App Router, MDX, and Tailwind CSS.
+date: "2026-02"
+stack:
+  - Next.js
+  - TypeScript
+  - Tailwind CSS
+  - MDX
+  - Vercel
+role: Solo — Design & Engineering
+highlights:
+  - Statically generated pages with server-side GitHub data fetching
+  - MDX-powered case studies with frontmatter
+  - Lighthouse scores 95+ across all categories
+  - Deployed to Vercel with automatic preview deploys
+links:
+  github: https://github.com/s10ege/portfolio
+  demo: https://s10ege.dev
+repo: portfolio
+---
+
+## Problem
+
+I needed a portfolio that felt like *my work* — not a template. Most portfolio generators produce generic output that all looks the same. I wanted full control over the UX, typography, and content structure, with zero CMS dependency.
+
+## Approach
+
+Built on Next.js App Router with TypeScript and Tailwind CSS. Content lives directly in the repo as MDX files, making it trivial to add or edit projects without touching a CMS dashboard. GitHub data is fetched server-side with `next fetch` caching and 12-hour revalidation, so repo cards always reflect live metadata.
+
+## Architecture
+
+```
+app/
+  page.tsx          ← Home (Hero + sections)
+  projects/         ← Index + [slug] detail
+  repos/            ← GitHub repos
+  technologies/     ← Tech stack
+  resume/           ← Web resume
+content/projects/   ← MDX files
+data/               ← TypeScript data files
+lib/                ← GitHub + MDX utilities
+```
+
+The MDX pipeline uses `next-mdx-remote` for RSC-compatible rendering. Each project file contains YAML frontmatter (parsed with `gray-matter`) and a narrative body.
+
+## Results
+
+- Deploy time under 60 seconds on Vercel
+- GitHub repo data refreshes every 12 hours without a redeploy
+- Adding a new project case study takes under 10 minutes: write MDX → push → done
+
+## Tooling
+
+This portfolio was designed and architected with the help of **Software Architect GPT** and built using **Claude Code** — Anthropic's AI coding assistant. The architecture decisions, component structure, and content pipeline were shaped through an AI-assisted workflow, with every line of code reviewed and iterated on collaboratively. It's a practical example of how AI tooling can accelerate the development of production-ready software without sacrificing quality or control.
+
+## Learnings
+
+Next.js App Router's server components make it straightforward to mix static content with live data without client-side waterfalls. MDX-as-content is a strong pattern for developer portfolios — it's version-controlled, diff-friendly, and doesn't require any auth or API tokens to edit.

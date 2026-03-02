@@ -1,0 +1,4 @@
+Place your resume.pdf here as: public/resume.pdf
+The /resume page links to /resume.pdf for download.
+
+public/SonerEroglu_CV.pdf
