@@ -27,12 +27,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...projectPages,
     {
-      url: `${siteConfig.url}/repos`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.7,
-    },
-    {
       url: `${siteConfig.url}/technologies`,
       lastModified: new Date(),
       changeFrequency: "monthly",

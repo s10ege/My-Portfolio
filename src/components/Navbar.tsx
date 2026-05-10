@@ -3,7 +3,6 @@ import { siteConfig } from "@/data/site";
 
 const navLinks = [
   { href: "/projects", label: "projects" },
-  { href: "/repos", label: "repos" },
   { href: "/technologies", label: "tech" },
   { href: "/resume", label: "resume" },
   { href: "/contact", label: "contact" },

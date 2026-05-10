@@ -1,20 +1,14 @@
 import Link from "next/link";
 import { getAllProjects } from "@/lib/mdx";
-import { getFeaturedRepos } from "@/lib/github";
 import { technologies } from "@/data/technologies";
 import { siteConfig } from "@/data/site";
 import { ProjectCard } from "@/components/ProjectCard";
-import { RepoCard } from "@/components/RepoCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { FadeIn } from "@/components/FadeIn";
 import { StaggerFadeIn, StaggerFadeInItem } from "@/components/StaggerFadeIn";
 
 export default async function HomePage() {
-  const [projects, repos] = await Promise.all([
-    Promise.resolve(getAllProjects()),
-    getFeaturedRepos(),
-  ]);
-
+  const projects = getAllProjects();
   const featuredProjects = projects.slice(0, 3);
 
   const topCategories = ["Languages", "Data & AI", "Frontend"];
@@ -105,30 +99,6 @@ export default async function HomePage() {
               {featuredProjects.map((project) => (
                 <StaggerFadeInItem key={project.slug}>
                   <ProjectCard project={project} />
-                </StaggerFadeInItem>
-              ))}
-            </StaggerFadeIn>
-          </section>
-        </FadeIn>
-      )}
-
-      {/* Featured Repos */}
-      {repos.length > 0 && (
-        <FadeIn direction="up" className="mb-20">
-          <section aria-labelledby="repos-heading">
-            <div className="mb-7 flex items-end justify-between gap-4">
-              <SectionHeading eyebrow="open source" title="Things I've shipped." />
-              <Link
-                href="/repos"
-                className="shrink-0 font-mono text-xs text-fg-muted transition-colors hover:text-accent"
-              >
-                all repos →
-              </Link>
-            </div>
-            <StaggerFadeIn className="grid gap-4 sm:grid-cols-2">
-              {repos.slice(0, 4).map((repo) => (
-                <StaggerFadeInItem key={repo.name}>
-                  <RepoCard repo={repo} />
                 </StaggerFadeInItem>
               ))}
             </StaggerFadeIn>
