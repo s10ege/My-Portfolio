@@ -5,29 +5,33 @@ import { siteConfig } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: `Hand-crafted case studies from projects built by ${siteConfig.githubUsername}.`,
+  description: `Hand-crafted case studies from projects built by ${siteConfig.name}.`,
 };
 
 export default function ProjectsPage() {
   const projects = getAllProjects();
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-20">
+    <div className="mx-auto max-w-5xl px-6 pt-16 pb-20 sm:pt-20">
       <header className="mb-14">
-        <p className="text-xs font-mono font-semibold uppercase tracking-widest text-indigo-400 mb-3">
-          Work
+        <p className="mb-4 font-mono text-xs text-accent">
+          <span className="text-accent/60">{"// "}</span>work
         </p>
-        <h1 className="text-4xl font-bold text-white mb-4">Projects</h1>
-        <p className="text-gray-400 max-w-lg">
+        <h1 className="text-4xl font-semibold tracking-tight text-fg sm:text-5xl">
+          Projects.
+        </h1>
+        <p className="mt-5 max-w-xl text-fg-muted leading-relaxed">
           Detailed case studies covering the problem, approach, architecture,
           and learnings from each project.
         </p>
       </header>
 
       {projects.length === 0 ? (
-        <p className="text-gray-500">No projects yet. Check back soon.</p>
+        <p className="font-mono text-sm text-fg-dim">
+          {"// no projects yet — check back soon"}
+        </p>
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}

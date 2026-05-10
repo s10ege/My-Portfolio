@@ -5,7 +5,7 @@ import { siteConfig } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Technologies",
-  description: `The tools and technologies ${siteConfig.githubUsername} works with.`,
+  description: `The tools and technologies ${siteConfig.name} works with.`,
 };
 
 const CATEGORY_ORDER: TechCategory[] = [
@@ -28,19 +28,22 @@ export default function TechnologiesPage() {
   );
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-20">
-      <header className="mb-14">
-        <p className="text-xs font-mono font-semibold uppercase tracking-widest text-indigo-400 mb-3">
-          Stack
+    <div className="mx-auto max-w-5xl px-6 pt-16 pb-20 sm:pt-20">
+      <header className="mb-16">
+        <p className="mb-4 font-mono text-xs text-accent">
+          <span className="text-accent/60">{"// "}</span>stack
         </p>
-        <h1 className="text-4xl font-bold text-white mb-4">Technologies</h1>
-        <p className="text-gray-400 max-w-lg">
+        <h1 className="text-4xl font-semibold tracking-tight text-fg sm:text-5xl">
+          Tools of the{" "}
+          <span className="font-display font-normal italic text-accent">trade</span>.
+        </h1>
+        <p className="mt-5 max-w-xl text-fg-muted leading-relaxed">
           The languages, frameworks, tools, and platforms I use day-to-day and
           professionally.
         </p>
       </header>
 
-      <div className="space-y-14">
+      <div className="space-y-12 border-t border-rule pt-12">
         {CATEGORY_ORDER.map((category) => {
           const items = grouped[category];
           if (!items || items.length === 0) return null;

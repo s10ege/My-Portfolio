@@ -10,12 +10,12 @@ interface TechGroupProps {
 
 const container: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
+  show: { transition: { staggerChildren: 0.04, delayChildren: 0.05 } },
 };
 
-const badge: Variants = {
-  hidden: { opacity: 0, scale: 0.85 },
-  show: { opacity: 1, scale: 1, transition: { duration: 0.3, ease: "easeOut" } },
+const item: Variants = {
+  hidden: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
 };
 
 export function TechGroup({ category, items }: TechGroupProps) {
@@ -23,33 +23,34 @@ export function TechGroup({ category, items }: TechGroupProps) {
   const inView = useInView(ref, { once: true, margin: "-40px 0px" });
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="grid gap-6 sm:grid-cols-[180px_1fr] sm:gap-10">
       <motion.h2
-        className="text-xs font-mono font-semibold uppercase tracking-widest text-indigo-400 mb-4"
-        initial={{ opacity: 0, x: -12 }}
+        className="font-mono text-xs lowercase tracking-wide text-fg-dim sm:pt-2"
+        initial={{ opacity: 0, x: -8 }}
         animate={inView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        {category}
+        <span className="text-accent/70">{"// "}</span>
+        {category.toLowerCase()}
       </motion.h2>
+
       <motion.ul
-        className="flex flex-wrap gap-2"
+        className="flex flex-wrap gap-1.5"
         role="list"
         variants={container}
         initial="hidden"
         animate={inView ? "show" : "hidden"}
       >
         {items.map((tech) => (
-          <motion.li
-            key={tech.name}
-            variants={badge}
-            whileHover={{ scale: 1.06, transition: { duration: 0.15 } }}
-            className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-sm text-gray-300 cursor-default"
-          >
-            <span>{tech.name}</span>
-            {tech.notes && (
-              <span className="text-xs text-gray-600">· {tech.notes}</span>
-            )}
+          <motion.li key={tech.name} variants={item}>
+            <span className="group inline-flex items-baseline gap-1.5 chip-code transition-colors hover:border-accent/40 hover:text-accent">
+              <span>{tech.name}</span>
+              {tech.notes && (
+                <span className="text-fg-dim transition-colors group-hover:text-fg-muted">
+                  · {tech.notes}
+                </span>
+              )}
+            </span>
           </motion.li>
         ))}
       </motion.ul>

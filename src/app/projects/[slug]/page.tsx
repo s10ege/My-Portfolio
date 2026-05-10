@@ -4,7 +4,6 @@ import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getAllProjectSlugs, getProjectBySlug } from "@/lib/mdx";
 import { Prose } from "@/components/Prose";
-import { Badge } from "@/components/Badge";
 import { siteConfig } from "@/data/site";
 
 interface Params {
@@ -49,41 +48,60 @@ export default async function ProjectDetailPage({
   if (!project) notFound();
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-20">
-      {/* Back */}
+    <div className="mx-auto max-w-3xl px-6 pt-12 pb-24 sm:pt-16">
+      {/* Back link */}
       <Link
         href="/projects"
-        className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-indigo-400 transition-colors mb-12"
+        className="group inline-flex items-center gap-2 font-mono text-xs text-fg-muted transition-colors hover:text-accent"
       >
-        ← All Projects
+        <span aria-hidden className="transition-transform group-hover:-translate-x-0.5">←</span>
+        cd ../projects
       </Link>
 
       {/* Header */}
-      <header className="mb-12 pb-12 border-b border-white/[0.08]">
-        <p className="text-xs font-mono font-semibold uppercase tracking-widest text-indigo-400 mb-3">
-          {project.date} · {project.role}
+      <header className="mt-10 mb-12 border-b border-rule pb-12">
+        <p className="mb-4 font-mono text-[0.72rem] text-fg-muted">
+          <span className="text-fg-dim">projects/</span>
+          <span className="text-fg">{project.slug}</span>
+          <span className="text-fg-dim">.mdx</span>
+          <span className="ml-2 text-fg-dim">·</span>
+          <span className="ml-2 text-accent">{project.date}</span>
+          <span className="ml-2 text-fg-dim">·</span>
+          <span className="ml-2 text-fg-muted">{project.role}</span>
         </p>
-        <h1 className="text-4xl font-bold text-white mb-4">{project.title}</h1>
-        <p className="text-xl text-gray-400 mb-8">{project.tagline}</p>
 
-        {/* Stack */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        <h1 className="text-4xl font-semibold leading-tight tracking-tight text-fg sm:text-5xl">
+          {project.title}
+        </h1>
+        <p className="mt-4 text-lg text-fg-muted leading-relaxed">
+          {project.tagline}
+        </p>
+
+        {/* Stack as inline-code chips */}
+        <div className="mt-7 flex flex-wrap gap-1.5">
           {project.stack.map((tech) => (
-            <Badge key={tech}>{tech}</Badge>
+            <span key={tech} className="chip-code">
+              {tech}
+            </span>
           ))}
         </div>
 
         {/* Highlights */}
         {project.highlights.length > 0 && (
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-5">
-            <p className="text-xs font-mono font-semibold uppercase tracking-widest text-gray-500 mb-3">
-              Highlights
+          <div className="mt-8 rounded-lg border border-rule bg-surface-1/50 p-5">
+            <p className="mb-3 font-mono text-[0.72rem] text-accent">
+              <span className="text-accent/60">{"// "}</span>highlights
             </p>
             <ul className="space-y-1.5">
               {project.highlights.map((h, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                  <span className="text-indigo-500 mt-0.5">✓</span>
-                  {h}
+                <li
+                  key={i}
+                  className="flex items-start gap-2.5 text-sm leading-relaxed text-fg"
+                >
+                  <span aria-hidden className="mt-0.5 font-mono text-accent">
+                    ›
+                  </span>
+                  <span>{h}</span>
                 </li>
               ))}
             </ul>
@@ -92,25 +110,27 @@ export default async function ProjectDetailPage({
 
         {/* Links */}
         {(project.links?.github || project.links?.demo || project.links?.article) && (
-          <div className="flex flex-wrap gap-3 mt-6">
-            {project.links?.github && (
-              <Link
-                href={project.links?.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm text-gray-300 hover:text-white hover:border-white/30 transition-colors"
-              >
-                GitHub ↗
-              </Link>
-            )}
+          <div className="mt-7 flex flex-wrap gap-2">
             {project.links?.demo && (
               <Link
                 href={project.links?.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition-colors"
+                className="group inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface transition-colors hover:bg-accent-hover"
               >
-                Live Demo ↗
+                Live demo
+                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">↗</span>
+              </Link>
+            )}
+            {project.links?.github && (
+              <Link
+                href={project.links?.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 rounded-md border border-rule px-4 py-2 font-mono text-sm text-fg-muted transition-colors hover:border-accent/40 hover:text-fg"
+              >
+                <span aria-hidden className="text-fg-dim group-hover:text-accent">↗</span>
+                github
               </Link>
             )}
             {project.links?.article && (
@@ -118,9 +138,10 @@ export default async function ProjectDetailPage({
                 href={project.links?.article}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm text-gray-300 hover:text-white hover:border-white/30 transition-colors"
+                className="group inline-flex items-center gap-2 rounded-md border border-rule px-4 py-2 font-mono text-sm text-fg-muted transition-colors hover:border-accent/40 hover:text-fg"
               >
-                Article ↗
+                <span aria-hidden className="text-fg-dim group-hover:text-accent">↗</span>
+                article
               </Link>
             )}
           </div>
