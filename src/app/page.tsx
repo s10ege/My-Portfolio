@@ -58,9 +58,9 @@ export default async function HomePage() {
 
         <FadeIn delay={0.25} direction="up">
           <p className="mt-7 max-w-xl text-base leading-relaxed text-fg-muted sm:text-lg">
-            Final-year Computer Systems Engineering student at Brunel. I work
-            across the stack — from microcontrollers to machine learning. This
-            is where I keep my projects and experiments.
+            Computer Systems Engineering graduate from Brunel (BEng Hons, 2:1).
+            I work across the stack — from microcontrollers to machine
+            learning. This is where I keep my projects and experiments.
           </p>
         </FadeIn>
 
@@ -153,7 +153,7 @@ export default async function HomePage() {
             <span className="font-display font-normal italic text-accent">London</span>.
           </h2>
           <p className="mb-7 max-w-xl text-fg-muted leading-relaxed">
-            Graduating soon and actively looking for graduate positions in
+            Recently graduated and actively looking for graduate positions in
             machine learning, software development, and related fields. If
             you&apos;re hiring or just want to talk, my inbox is open.
           </p>
