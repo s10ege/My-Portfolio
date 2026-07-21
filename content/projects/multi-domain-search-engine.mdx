@@ -1,72 +1,56 @@
 ---
 slug: multi-domain-search-engine
 title: Multi-Domain Search Engine
-tagline: A semantic search engine and RAG system that retrieves and reasons over documents across multiple domains — built as a dissertation project.
-date: "2026-03"
+tagline: A hybrid semantic search engine and RAG system over a ~9,000-document AI/ML corpus — my final-year dissertation, lifting nDCG@10 from 0.355 to 0.828.
+date: "2026-04"
 stack:
   - Python
-  - txtai
-  - sentence-transformers
+  - FAISS
   - BM25
-  - pandas
-  - pytest
+  - cross-encoders
+  - RAG
+  - scikit-learn
+  - Streamlit
 role: Solo — Research & Engineering
-status: In Progress
 highlights:
-  - Semantic search powered by dense vector embeddings (sentence-transformers)
-  - Hybrid retrieval combining vector similarity with BM25 keyword scoring
-  - RAG pipeline for AI-generated answers grounded in indexed documents
-  - Domain-scoped filtering to restrict queries to specific knowledge domains
-  - 71 tests with 89% coverage across the retrieval and QA pipeline
+  - Hybrid retrieval combining FAISS dense vector search, BM25 lexical search, and cross-encoder reranking
+  - Local RAG pipeline (Qwen3-0.6B) producing grounded answers from retrieved sources
+  - Ranking quality lifted from nDCG@10 of 0.355 (BM25 baseline) to 0.828 with full reranking
+  - Interactive Streamlit interface for query input, result exploration, and domain filtering
+  - Validated with a 258-test automated suite, a full dissertation, and a conference-style poster
 links:
   github: https://github.com/s10ege/Multi-Domain-Search-Engine
 ---
 
 ## Background
 
-This project is my dissertation — an ongoing research effort exploring how semantic search and retrieval-augmented generation (RAG) can be combined to build a domain-aware question-answering system. It is currently a work in progress; the core retrieval pipeline is functional but the full multi-domain orchestration and frontend interface are still under active development.
+This was my final-year dissertation at Brunel: design and build a search engine that understands natural-language queries over a **~9,000-document AI/ML corpus**, and answer questions grounded in what it retrieves. The system was completed in April 2026 and documented in a full dissertation and a conference-style poster.
 
 ## Problem
 
-Keyword-based search breaks down the moment a user expresses a query differently from how a document was written. Two sentences can mean the same thing and share zero words in common. Traditional search engines fail here — they match tokens, not intent. The goal of this project is to build a search engine that understands *meaning*, not just text, and can answer questions by reasoning over the retrieved evidence rather than just returning a list of links.
+Keyword-based search breaks down the moment a user expresses a query differently from how a document was written. Two sentences can mean the same thing and share zero words in common — token matching fails on intent. But pure semantic search has the opposite weakness: it can miss exact-term lookups that keyword search handles trivially. The goal was a system that gets both right, and then goes a step further by *answering* rather than just ranking.
 
 ## Approach
 
-The system is built around [txtai](https://github.com/neuml/txtai), a lightweight semantic search library that wraps sentence-transformers and a vector index. Documents are embedded into a dense vector space at indexing time. At query time, the user's input is embedded into the same space and the nearest neighbours are retrieved by cosine similarity.
+Retrieval is a three-stage hybrid pipeline:
 
-To improve retrieval precision, a **hybrid scoring** strategy blends vector similarity with BM25 — a classic keyword-frequency algorithm. This means the engine performs well on both conceptual queries ("explain gradient descent") and specific lookup queries ("what is the Adam optimizer's default learning rate").
+1. **BM25 lexical search** — a classic keyword-frequency ranker that excels at exact-term queries and serves as the evaluation baseline
+2. **FAISS dense retrieval** — documents embedded into a vector space; queries retrieved by similarity, catching semantic matches that share no vocabulary
+3. **Cross-encoder reranking** — a model that scores each candidate (query, document) pair jointly, reordering the merged candidate set with far more precision than either retriever alone
 
-The **RAG mode** takes retrieved passages and feeds them into a generative model to produce a grounded, coherent answer — rather than forcing the user to read raw document chunks.
+On top of retrieval sits a **Retrieval-Augmented Generation (RAG)** pipeline running a local **Qwen3-0.6B** model — retrieved passages are fed to the model to produce a coherent answer grounded in the sources, rather than leaving the user to read raw chunks. Domain filtering scopes queries to a specific slice of the corpus.
 
-**Domain filtering** is a first-class feature: queries can be scoped to a specific subdomain of the index, preventing irrelevant results from bleeding in across topic boundaries.
+## Results
 
-## Architecture
+Evaluated with standard IR metrics, the pipeline more than doubled ranking quality over the lexical baseline:
 
-```
-backend/
-  src/
-    client.py         ← CLI entrypoint (search / answer / summarise)
-    retriever.py      ← Hybrid BM25 + vector retrieval
-    rag.py            ← Retrieval-augmented answer generation
-    domain_filter.py  ← Per-domain index scoping
-    indexer.py        ← Document ingestion and embedding pipeline
-  test/               ← 71 tests, 89% coverage
-embeddings/           ← Pre-built txtai index (persisted to disk)
-final_data.csv        ← Source dataset
-```
+| Configuration | nDCG@10 |
+| --- | --- |
+| BM25 baseline | 0.355 |
+| Full hybrid + cross-encoder reranking | **0.828** |
 
-The pipeline is intentionally modular — the retriever, RAG layer, and domain filter are independent components that can be swapped or extended without touching each other.
-
-## Current Status
-
-The core retrieval and RAG pipeline is fully implemented and tested. What remains:
-- Multi-domain orchestration (routing queries across dynamically loaded domain indices)
-- A web interface to replace the current CLI
-- Evaluation against standard IR benchmarks (BEIR / TREC)
-- Dissertation write-up and formal evaluation
-
-This project is expected to be completed and submitted as part of my final year dissertation.
+The system is exercised through an interactive **Streamlit** interface — query input, ranked result exploration, and domain filtering — and validated by a **258-test automated suite** covering the retrieval stages, the RAG layer, and the evaluation tooling.
 
 ## Learnings
 
-Building a search engine reveals how much nuance lives inside the word "relevance." Vector similarity is powerful but not infallible — it can surface semantically adjacent documents that are contextually wrong. Hybrid retrieval is a significant improvement, but tuning the blend between dense and sparse scores is non-trivial. The 89% test coverage was essential: retrieval bugs are subtle and often only surface on edge-case queries, not happy-path inputs.
+Building a search engine reveals how much nuance lives inside the word "relevance." Dense retrieval is powerful but can surface semantically adjacent documents that are contextually wrong; BM25 is literal but dependable. The cross-encoder is where the quality actually comes from — and also where the latency goes, which is the trade-off the whole architecture negotiates. Rigorous evaluation (nDCG against a fixed baseline) turned tuning from guesswork into engineering, and the test suite mattered because retrieval bugs are subtle: they surface on edge-case queries, never on happy-path demos.

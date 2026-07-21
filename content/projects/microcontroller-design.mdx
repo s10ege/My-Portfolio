@@ -1,47 +1,47 @@
 ---
 slug: microcontroller-design
-title: Microcontroller Group Design Project
-tagline: A team-built microcontroller-based prototype nominated for the Brunel Engineering Plus showcase.
+title: Embedded Home Monitoring System
+tagline: A team-built PIC16F18877 smart-home prototype — sensing, alarm, and actuation — nominated for the Brunel Engineering Plus showcase.
 date: "2025-05"
 stack:
+  - PIC16F18877
   - Flowcode
-  - Microcontroller Systems
-  - Digital Systems
   - Embedded Systems
-role: Team — Embedded Systems Engineering
+  - Digital Systems
+role: Team — Control Logic & Programming
 links: {}
 highlights:
-  - Designed and implemented a functional microcontroller-based prototype from scratch
-  - Programmed using Flowcode — a graphical embedded development environment
-  - Produced professional technical documentation and project report
+  - PIC16F18877 smart-home prototype with motion, temperature, and humidity sensing
+  - Keypad-secured alarm system with LCD status output and servo-driven doors
+  - Led the control-logic programming in Flowcode
   - Nominated for the Brunel Engineering Plus showcase event
 ---
 
 ## Background
 
-This was a group project for the **Microcontroller Group Design** module at Brunel University London. The brief required teams to design and implement a microcontroller-based solution — combining hardware interfacing, low-level programming, and systems thinking into a single working prototype.
+A group project for the **Microcontroller Group Design** module at Brunel University London: design and build a working smart-home monitoring prototype around a **PIC16F18877** microcontroller — combining hardware interfacing, embedded programming, and systems integration into a single physical device.
 
-## Approach
+## What we built
 
-The team divided responsibilities across hardware design, firmware development, and documentation. The microcontroller was programmed using **Flowcode** — a graphical programming environment designed for embedded systems that allows logic to be built through flowchart-style diagrams and compiled down to machine code. This made it faster to prototype and iterate on the control logic without getting bogged down in low-level register configuration from the start.
+The prototype monitors and secures a model home:
 
-We followed an iterative prototyping workflow: define the behaviour, implement it in Flowcode, deploy to the microcontroller, test against the physical system, and refine. The tight loop between software and hardware required precision that purely software projects rarely demand.
+- **Sensing** — motion detection plus temperature and humidity monitoring
+- **Security** — a keypad-secured alarm system, so arming and disarming requires a code
+- **Output** — an LCD displaying live readings and system status
+- **Actuation** — servo-driven doors responding to the system's state
 
-## What We Built
+Bringing these together on one microcontroller meant managing real embedded constraints: pin allocation across peripherals, timing between sensor reads and display updates, and state transitions that had to behave predictably on physical hardware.
 
-The project involved designing a microcontroller-based solution that demonstrated core embedded systems principles:
+## My role
 
-- **Peripheral interfacing** — reading from sensors and driving output components
-- **Flowcode logic** — visual programming of the control flow and state transitions
-- **System integration** — bringing hardware and software together into a cohesive, testable prototype
-- **Technical reporting** — full documentation of design decisions, circuit diagrams, and test results
+I **led the control-logic programming** in **Flowcode** — a graphical embedded development environment where logic is built as flowchart-style diagrams and compiled to the PIC. The control logic tied every peripheral together: reading sensors, evaluating alarm conditions, handling keypad input, and driving the LCD and servos through the system's state machine.
 
-Full technical details are documented in the project report submitted as part of the module.
+We followed a tight iterative loop: define the behaviour, implement it in Flowcode, deploy to the PIC, test against the physical system, refine. The feedback from real hardware demanded a precision that purely software projects rarely do.
 
 ## Recognition
 
-The project was nominated for the **Brunel Engineering Plus** showcase event — a university-wide recognition programme for innovative and high-quality student engineering work. Being nominated among all engineering disciplines across the university was a meaningful validation of the team's effort and the quality of the final prototype.
+The project was nominated for the **Brunel Engineering Plus** showcase — a university-wide recognition programme for innovative, high-quality student engineering work, selected from across all engineering disciplines.
 
 ## Learnings
 
-Flowcode abstracts away much of the low-level complexity of microcontroller programming, but understanding what the generated code is doing underneath still matters — especially when debugging timing issues or unexpected hardware behaviour. Working in a team also reinforced how important clear communication is when hardware and software decisions are made by different people.
+Flowcode abstracts away much of the low-level complexity of microcontroller programming, but understanding what the generated code does underneath still matters — especially when debugging timing issues or unexpected hardware behaviour. Working in a team also reinforced how much clear communication matters when hardware and software decisions are made by different people.

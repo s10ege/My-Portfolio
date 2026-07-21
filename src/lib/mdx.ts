@@ -42,7 +42,7 @@ export function getAllProjects(): ProjectFrontmatter[] {
         slug: file.replace(/\.mdx$/, ""),
       } as ProjectFrontmatter;
     })
-    .sort((a, b) => b.date.localeCompare(a.date));
+    .sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
 }
 
 export function getProjectBySlug(slug: string): Project | null {
