@@ -10,11 +10,13 @@ export const metadata: Metadata = {
 
 const CATEGORY_ORDER: TechCategory[] = [
   "Languages",
-  "Data & AI",
-  "Frontend",
-  "Systems",
-  "Platforms & Tools",
-  "Tooling",
+  "AI & Machine Learning",
+  "Data & Databases",
+  "Web & Frameworks",
+  "Software Engineering",
+  "Embedded & Hardware",
+  "Tools & Platforms",
+  "Responsible AI",
   "Spoken Languages",
 ];
 

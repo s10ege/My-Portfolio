@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAllProjects } from "@/lib/mdx";
-import { technologies } from "@/data/technologies";
+import { technologies, type TechCategory } from "@/data/technologies";
 import { siteConfig } from "@/data/site";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -11,7 +11,11 @@ export default async function HomePage() {
   const projects = getAllProjects();
   const featuredProjects = projects.slice(0, 3);
 
-  const topCategories = ["Languages", "Data & AI", "Frontend"];
+  const topCategories: TechCategory[] = [
+    "Languages",
+    "AI & Machine Learning",
+    "Web & Frameworks",
+  ];
   const featuredTech = technologies.filter((t) =>
     topCategories.includes(t.category)
   );
