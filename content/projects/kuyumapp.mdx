@@ -1,0 +1,63 @@
+---
+slug: kuyumapp
+title: KuyumApp
+tagline: An offline-first POS and transaction management desktop app for gold jewelry retail — replacing paper ledgers, running in production.
+date: "2026-06"
+stack:
+  - React
+  - TypeScript
+  - Tauri
+  - Rust
+  - SQLite
+  - Vite
+  - shadcn/ui
+  - Tailwind CSS
+role: Solo — Design & Engineering
+links: {}
+highlights:
+  - Gold product transactions across multiple categories with commission management
+  - Role-based access control with full audit logging
+  - End-of-day PDF reports with day-locking for immutable records
+  - Integer-based money and gold storage, soft deletes, and automated stamped SQLite backups
+  - In production at a real shop — parallel-run pilot validated against the paper ledger daily
+---
+
+## Problem
+
+Gold jewelry shops still run on paper ledgers. Every sale, purchase, and commission is written by hand, end-of-day totals are calculated manually, and records can be lost, altered, or simply misread. A cloud POS is a poor fit: the shop needs to keep operating when the internet doesn't, and the business data is too sensitive to hand to a third-party server.
+
+KuyumApp is a desktop cash register and transaction management application built to replace that ledger — fully offline, no server required.
+
+## Approach
+
+The app is built end-to-end in TypeScript — React with Vite, shadcn/ui, and Tailwind CSS — inside a **Tauri** native shell, with a local **SQLite** database and **Rust** for hardware integration. Everything runs on the shop's own machine; there is no backend, no account system, no network dependency.
+
+Core capabilities:
+
+- **Transactions** — gold product sales and purchases across multiple product categories, with per-transaction commission management
+- **Access control** — role-based permissions, so staff and owner see and do different things, with every action captured in an audit log
+- **End-of-day reporting** — daily summaries exported to PDF, with *day-locking*: once a day is closed, its records become immutable
+
+## Financial integrity
+
+A cash register's data has to be trustworthy, so integrity is designed in rather than bolted on:
+
+- **Integer-based storage** for money and gold amounts — no floating-point rounding errors in financial records
+- **Soft deletes** — nothing is ever destroyed; deletions are flagged and kept in the audit trail
+- **Automated stamped SQLite backups** — the database is snapshotted automatically, so any state can be recovered
+
+## Production pilot
+
+KuyumApp is deployed at a single location — the family gold jewelry business — in a **parallel-run pilot**: staff use the app alongside the existing paper ledger, and outputs are validated against real daily records to surface bugs and edge cases before full cutover.
+
+The shop's machine is a 2013 Mac. Legacy hardware compatibility issues were resolved, and the lightweight Tauri build stays performant on decade-old hardware.
+
+## Roadmap
+
+- Automated gold price ingestion, so daily rates no longer need manual entry
+- Voice-based transaction entry for hands-busy counter work
+- Commercial rollout to additional shops as isolated offline instances
+
+## Learnings
+
+Building for a real business is a different discipline from building coursework. Users don't read documentation, hardware is old, and financial data must be beyond doubt — which is why the integrity features (integer money, day-locking, audit trails) ended up shaping the architecture more than any UI decision. Running the pilot in parallel with the paper ledger turned the shop itself into the test suite.

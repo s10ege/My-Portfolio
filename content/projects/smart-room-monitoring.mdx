@@ -1,0 +1,46 @@
+---
+slug: smart-room-monitoring
+title: Smart Room Monitoring System
+tagline: A Raspberry Pi monitoring system with multi-rate sensor polling, a three-state alert engine, and a React dashboard served over a Flask REST API.
+date: "2026-02"
+stack:
+  - Raspberry Pi
+  - Python
+  - Flask
+  - React
+  - GPIO
+role: Solo — Hardware & Software
+links: {}
+highlights:
+  - DHT11 temperature/humidity and HC-SR04 ultrasonic presence sensing over GPIO
+  - Custom 1 kΩ/2 kΩ voltage divider level-shifting the 5 V ECHO line to a GPIO-safe 3.3 V
+  - Thread-safe Python sensor layer with multi-rate polling and 50 ms button debounce
+  - Three-state alert engine (SAFE/WARNING/ALERT) driving LED and buzzer actuators
+  - Flask REST API + React dashboard, accessible on the LAN and remotely via ngrok
+---
+
+## Overview
+
+A room monitoring system built on a Raspberry Pi that senses its environment, decides how concerned it should be, and makes that state visible — locally through LEDs and a buzzer, and remotely through a web dashboard. The project spans the full stack in the literal sense: from voltage levels on a breadboard up to a React frontend.
+
+## Hardware
+
+The Pi interfaces with a **DHT11** temperature/humidity sensor and an **HC-SR04** ultrasonic presence sensor over GPIO, alongside an LED, an active buzzer, and a push-button.
+
+The HC-SR04 is a 5 V part, but Raspberry Pi GPIO pins are 3.3 V — feeding the ECHO line in directly would damage the board. A **1 kΩ/2 kΩ voltage divider** level-shifts the 5 V ECHO signal down to a GPIO-safe 3.3 V, letting the two operate together on a breadboard without a dedicated level-shifter IC.
+
+## Software
+
+The sensor layer is **thread-safe Python** with a multi-rate polling loop matched to each device: the DHT11 is read every 2 seconds (it's slow and rate-limited), while the HC-SR04 and the push-button are polled at 5 Hz, with a 50 ms debounce on the button.
+
+Readings feed a **three-state alert engine** — SAFE, WARNING, ALERT — which drives the actuators: the LED and buzzer escalate as conditions cross thresholds, and the button lets you acknowledge or reset locally.
+
+The system is exposed through a **Flask REST API**, consumed by a **React dashboard** that shows live readings and alert state. The dashboard is reachable across the local network, and remotely via an **ngrok** tunnel.
+
+## Reliability
+
+The system ran a ~2-hour endurance test — roughly 3,600 poll cycles — with a 1.3% sensor null-read rate, stable memory, and no crashes. Null reads from the DHT11 are expected behaviour for the part; the sensor layer tolerates them rather than treating them as failures.
+
+## Learnings
+
+Hardware doesn't forgive assumptions. The voltage divider exists because reading a datasheet carefully is cheaper than replacing a Pi; the multi-rate polling loop exists because each sensor has its own timing personality. The most valuable habit this project built was designing the software around the hardware's real constraints — debounce, read intervals, expected null rates — instead of the idealized behaviour in tutorials.

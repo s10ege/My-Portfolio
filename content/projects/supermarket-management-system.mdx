@@ -1,0 +1,52 @@
+---
+slug: supermarket-management-system
+title: Supermarket Management System
+tagline: A modular object-oriented retail and banking application in Java, driven from UML design to a Swing GUI and verified against 25 documented use cases.
+date: "2025-03"
+stack:
+  - Java
+  - Swing
+  - UML
+  - NetBeans
+role: Solo — Software Engineering
+links: {}
+highlights:
+  - Modular OOP architecture — inventory, basket/wishlist, checkout, supplier reordering, banking, and authentication as separate components
+  - Role-based user authentication with distinct customer and admin workflows
+  - UML-driven design — use-case, class, and sequence diagrams produced through noun/verb analysis
+  - Inheritance and abstraction across product and account class hierarchies
+  - Verified against 25 documented use cases covering customer and admin flows
+---
+
+## Brief
+
+Design and build a retail management application in Java from written requirements — the kind of brief where the real deliverable is the *design process*, not just working code. The result is a supermarket system with integrated banking, built in NetBeans with a Swing GUI.
+
+## Design first
+
+The system was driven from requirements using **UML**: use-case, class, and sequence diagrams produced through noun/verb analysis of the brief. The nouns became candidate classes, the verbs became methods and interactions, and the diagrams were the contract the implementation was built against.
+
+That analysis produced two deep class hierarchies built on inheritance and abstraction:
+
+- **Products** — food, electrical, book, clothing, and kitchen items sharing a common product base
+- **Accounts** — current, ISA, and savings accounts sharing common banking behaviour
+
+## What it does
+
+The application is organised into separate components, each with a single responsibility:
+
+- **Inventory** — stock management with automatic low-stock supplier reordering
+- **Basket & wishlist** — item selection and saved-for-later flows
+- **Checkout** — VAT calculation and balance handling against the banking module
+- **Banking** — account management across the three account types
+- **Authentication** — role-based access with distinct customer and admin experiences
+
+State persists to text files, and all user input is validated at the boundary.
+
+## Verification
+
+The full system was verified against **25 documented use cases** spanning both customer and admin workflows — each one traced from the original UML use-case diagram through to a tested behaviour in the running application.
+
+## Learnings
+
+This project made the case for design-before-code in the most direct way: the class hierarchies that felt like paperwork in the UML stage are exactly what kept the codebase manageable once five product types and three account types existed. It also demonstrated how much of "banking logic" is really validation and arithmetic discipline — VAT, balances, and stock counts all punish sloppy edge-case handling.
