@@ -32,19 +32,31 @@ export function Whoami() {
 
 interface Day { date: string; level: number }
 
-// Public contribution calendar from the GitHub profile, refreshed hourly.
-async function getContributions(): Promise<{ days: Day[]; total: string } | null> {
+// Public contribution calendar from the GitHub profile, refreshed hourly, cut to the last 3 months.
+async function getContributions(): Promise<{ days: Day[]; total: number } | null> {
   try {
     const res = await fetch(`https://github.com/users/${siteConfig.githubUsername}/contributions`, {
       next: { revalidate: 3600 },
     });
     if (!res.ok) return null;
     const html = await res.text();
-    const days = [...html.matchAll(/data-date="([\d-]+)"[^>]*data-level="(\d)"/g)]
-      .map(([, date, level]) => ({ date, level: Number(level) }))
+    // Per-day counts live in the tooltips: <tool-tip for="contribution-day-component-R-C">5 contributions on ...
+    const counts = new Map(
+      [...html.matchAll(/for="(contribution-day-component-[\d-]+)"[^>]*>(\d+) contributions? on/g)].map(
+        ([, id, n]) => [id, Number(n)] as const,
+      ),
+    );
+    const all = [...html.matchAll(/data-date="([\d-]+)"[^>]*id="([^"]+)"[^>]*data-level="(\d)"/g)]
+      .map(([, date, id, level]) => ({ date, level: Number(level), count: counts.get(id) ?? 0 }))
       .sort((a, b) => a.date.localeCompare(b.date));
-    const total = html.match(/([\d,]+)\s+contributions?\s+in the last year/)?.[1] ?? "0";
-    return days.length ? { days, total } : null;
+    if (!all.length) return null;
+    const cutoff = new Date(all[all.length - 1].date + "T00:00:00Z");
+    cutoff.setUTCMonth(cutoff.getUTCMonth() - 3);
+    const recent = all.filter((d) => d.date > cutoff.toISOString().slice(0, 10));
+    return {
+      days: recent.map(({ date, level }) => ({ date, level })),
+      total: recent.reduce((sum, d) => sum + d.count, 0),
+    };
   } catch {
     return null;
   }
@@ -109,7 +121,7 @@ export async function ContribGraph() {
         </div>
       ))}
       <div className="mt-[0.5em]">
-        {data.total} contributions in the last year{"  "}
+        {data.total.toLocaleString("en-US")} contributions in the last 3 months{"  "}
         <span className="text-[var(--t-brightblack)]">Less </span>
         {[0, 1, 2, 3, 4].map((l) => <Cell key={l} level={l} />)}
         <span className="text-[var(--t-brightblack)]"> More</span>
