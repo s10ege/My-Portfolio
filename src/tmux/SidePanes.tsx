@@ -120,11 +120,13 @@ export async function ContribGraph() {
           {weeks.map((w, i) => (w[d] ? <Cell key={i} level={w[d]!.level} /> : " "))}
         </div>
       ))}
-      <div className="mt-[0.5em]">
+      <div className="mt-[0.5em] whitespace-normal">
         {data.total.toLocaleString("en-US")} contributions in the last 3 months{"  "}
-        <span className="text-[var(--t-brightblack)]">Less </span>
-        {[0, 1, 2, 3, 4].map((l) => <Cell key={l} level={l} />)}
-        <span className="text-[var(--t-brightblack)]"> More</span>
+        <span className="whitespace-nowrap">
+          <span className="text-[var(--t-brightblack)]">Less </span>
+          {[0, 1, 2, 3, 4].map((l) => <Cell key={l} level={l} />)}
+          <span className="text-[var(--t-brightblack)]"> More</span>
+        </span>
       </div>
     </div>
   );
