@@ -92,7 +92,7 @@ export async function ContribGraph() {
   weeks.forEach((w, i) => {
     const first = w.find(Boolean);
     const m = first ? Number(first.date.slice(5, 7)) - 1 : -1;
-    if (m !== lastMonth && i + 3 <= weeks.length) {
+    if (m !== lastMonth) {
       MONTHS[m].split("").forEach((c, j) => (label[i + j] = c));
       lastMonth = m;
     }
