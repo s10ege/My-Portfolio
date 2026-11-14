@@ -6,7 +6,6 @@ import { themeBootScript, themeCss } from "@/tmux/themes";
 import { TmuxProvider } from "@/tmux/store";
 import { StatusBar } from "@/tmux/StatusBar";
 import { Panes } from "@/tmux/Panes";
-import { ContribGraph } from "@/tmux/SidePanes";
 import { Keybindings } from "@/tmux/Keybindings";
 import { KeysPopup } from "@/tmux/KeysPopup";
 import { Intro } from "@/tmux/Intro";
@@ -58,10 +57,7 @@ export default function RootLayout({
         <TmuxProvider>
           <div className="tmux-root">
             <StatusBar />
-            <Panes
-              main={children}
-              side={{ graph: <ContribGraph /> }}
-            />
+            <Panes main={children} />
           </div>
           <KeysPopup />
           <Keybindings />

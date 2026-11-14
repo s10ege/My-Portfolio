@@ -4,15 +4,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { DEFAULT_THEME_ID, THEMES, THEME_STORAGE_KEY } from "./themes";
 
-export type PaneId = "main" | "graph";
-/** Spatial order for focus moves: main is left, side panes stack top to bottom on the right. */
-export const SIDE_PANES: PaneId[] = ["graph"];
-
 interface TmuxState {
-  focusedPane: PaneId;
-  setFocusedPane: (p: PaneId) => void;
-  zoomed: boolean;              // focused pane fills the window
-  toggleZoom: () => void;
   prefixActive: boolean;        // shows PREFIX flag in the Status Bar
   setPrefixActive: (v: boolean) => void;
   keysPopupOpen: boolean;
@@ -27,8 +19,6 @@ interface TmuxState {
 const Ctx = createContext<TmuxState | null>(null);
 
 export function TmuxProvider({ children }: { children: React.ReactNode }) {
-  const [focusedPane, setFocusedPane] = useState<PaneId>("main");
-  const [zoomed, setZoomed] = useState(false);
   const [prefixActive, setPrefixActive] = useState(false);
   const [keysPopupOpen, setKeysPopupOpen] = useState(false);
   const [themeId, setThemeIdState] = useState(DEFAULT_THEME_ID);
@@ -52,10 +42,8 @@ export function TmuxProvider({ children }: { children: React.ReactNode }) {
     setThemeId(THEMES[(i + 1) % THEMES.length].id);
   }, [themeId, setThemeId]);
 
-  const toggleZoom = useCallback(() => setZoomed((z) => !z), []);
-
   return (
-    <Ctx.Provider value={{ focusedPane, setFocusedPane, zoomed, toggleZoom, prefixActive, setPrefixActive, keysPopupOpen, setKeysPopupOpen, themeId, setThemeId, cycleTheme, introDone, setIntroDone }}>
+    <Ctx.Provider value={{ prefixActive, setPrefixActive, keysPopupOpen, setKeysPopupOpen, themeId, setThemeId, cycleTheme, introDone, setIntroDone }}>
       {children}
     </Ctx.Provider>
   );

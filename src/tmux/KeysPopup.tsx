@@ -8,16 +8,11 @@ const KEYS: [string, string][] = [
   ["prefix 1..4", "Select window 1 to 4"],
   ["prefix n", "Select the next window"],
   ["prefix p", "Select the previous window"],
-  ["prefix Left", "Move to the pane on the left"],
-  ["prefix Right", "Move to the pane on the right"],
-  ["prefix z", "Toggle zoom of the current pane"],
   ["prefix t", "Cycle the colour theme"],
   ["prefix ?", "List key bindings"],
   ["prefix Escape", "Cancel the prefix"],
   ["1..4", "Select window 1 to 4"],
   ["M-1..M-4", "Select window 1 to 4"],
-  ["C-M-Left", "Move to the pane on the left"],
-  ["C-M-Right", "Move to the pane on the right"],
 ];
 
 export function KeysPopup() {

@@ -1,5 +1,5 @@
 import { getAllProjects } from "@/lib/mdx";
-import { getContributions } from "./SidePanes";
+import { getContributions } from "./GhGraph";
 
 // Mirrors Omarchy's /etc/fastfetch/config.jsonc: logo from ~/.config/omarchy/branding/about.txt
 // in green, then boxed module groups with tree keys. Values are the owner's profile, not hardware.

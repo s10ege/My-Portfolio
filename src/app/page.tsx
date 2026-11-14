@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { getAllProjects } from "@/lib/mdx";
-import { Cmd } from "@/tmux/SidePanes";
+import { Cmd, ContribGraph } from "@/tmux/GhGraph";
 import { Fastfetch } from "@/tmux/Fastfetch";
 import "@/tmux/glow.css";
 
-// The home Window is a short shell session: fastfetch, then one compact README.
+// The home Window is a short shell session: fastfetch, gh graph, then one compact README.
 export default function HomePage() {
   const featured = getAllProjects().slice(0, 3);
 
@@ -13,6 +13,10 @@ export default function HomePage() {
       <section>
         <Cmd>fastfetch</Cmd>
         <Fastfetch />
+      </section>
+
+      <section>
+        <ContribGraph />
       </section>
 
       <section>
