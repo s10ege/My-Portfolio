@@ -2,7 +2,7 @@ import Link from "next/link";
 import { siteConfig } from "@/data/site";
 import { getAllProjects } from "@/lib/mdx";
 
-function Cmd({ children }: { children: string }) {
+export function Cmd({ children }: { children: string }) {
   return (
     <div>
       <span className="text-[var(--t-green)]">~</span> <span className="text-[var(--t-blue)]">%</span> {children}
@@ -33,7 +33,7 @@ export function Whoami() {
 interface Day { date: string; level: number }
 
 // Public contribution calendar from the GitHub profile, refreshed hourly, cut to the last 3 months.
-async function getContributions(): Promise<{ days: Day[]; total: number } | null> {
+export async function getContributions(): Promise<{ days: Day[]; total: number } | null> {
   try {
     const res = await fetch(`https://github.com/users/${siteConfig.githubUsername}/contributions`, {
       next: { revalidate: 3600 },
