@@ -107,6 +107,12 @@ export function Keybindings() {
       if (e.ctrlKey && e.altKey && !e.metaKey && e.key in ARROWS) {
         e.preventDefault();
         movePane(ARROWS[e.key]);
+        return;
+      }
+      // Bare 1..4 select a window too: a site shortcut, not a tmux binding.
+      if (!e.ctrlKey && !e.altKey && !e.metaKey && e.key >= "1" && e.key <= String(WINDOWS.length)) {
+        e.preventDefault();
+        selectWindow(Number(e.key) - 1);
       }
     };
 

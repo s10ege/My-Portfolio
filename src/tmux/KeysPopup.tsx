@@ -16,6 +16,7 @@ const KEYS: [string, string][] = [
   ["prefix t", "Cycle the colour theme"],
   ["prefix ?", "List key bindings"],
   ["prefix Escape", "Cancel the prefix"],
+  ["1..4", "Select window 1 to 4"],
   ["M-1..M-4", "Select window 1 to 4"],
   ["C-M-Left", "Move to the pane on the left"],
   ["C-M-Right", "Move to the pane on the right"],
