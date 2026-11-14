@@ -31,7 +31,15 @@ body {
 .tmux-root {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
+}
+
+/* Phones: a smaller terminal font, as in mobile SSH clients, so ~54 columns fit. */
+@media (max-width: 767px) {
+  html,
+  body {
+    font-size: 12px;
+  }
 }
 
 ::selection {

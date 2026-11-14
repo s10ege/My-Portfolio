@@ -79,7 +79,7 @@ export function Intro() {
   if (!visible) return null;
   return (
     <div
-      className="fixed inset-0 z-[1000] overflow-hidden whitespace-pre bg-[var(--t-bg)] p-[1ch] text-[var(--t-fg)]"
+      className="fixed inset-0 z-[1000] overflow-hidden whitespace-pre-wrap break-all bg-[var(--t-bg)] p-[1ch] text-[var(--t-fg)]"
       style={{ fontFamily: "var(--font-jetbrains)" }}
       aria-hidden
     >
