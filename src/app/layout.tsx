@@ -1,27 +1,19 @@
 import type { Metadata } from "next";
-import { Manrope, JetBrains_Mono, Fraunces } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { PageTransition } from "@/components/PageTransition";
 import { siteConfig } from "@/data/site";
-
-const manrope = Manrope({
-  variable: "--font-manrope",
-  subsets: ["latin"],
-  display: "swap",
-});
+import { themeBootScript, themeCss } from "@/tmux/themes";
+import { TmuxProvider } from "@/tmux/store";
+import { StatusBar } from "@/tmux/StatusBar";
+import { Panes } from "@/tmux/Panes";
+import { Whoami, GitLog, LsProjects } from "@/tmux/SidePanes";
+import { Keybindings } from "@/tmux/Keybindings";
+import { KeysPopup } from "@/tmux/KeysPopup";
+import { Intro } from "@/tmux/Intro";
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  style: ["italic"],
   display: "swap",
 });
 
@@ -57,15 +49,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${manrope.variable} ${jetbrainsMono.variable} ${fraunces.variable} antialiased min-h-screen flex flex-col`}
-      >
-        <Navbar />
-        <main className="flex-1">
-          <PageTransition>{children}</PageTransition>
-        </main>
-        <Footer />
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: themeCss() }} />
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
+      <body className={`${jetbrainsMono.variable} antialiased`}>
+        <TmuxProvider>
+          <div className="tmux-root">
+            <StatusBar />
+            <Panes
+              main={children}
+              side={{ whoami: <Whoami />, gitlog: <GitLog />, ls: <LsProjects /> }}
+            />
+          </div>
+          <KeysPopup />
+          <Keybindings />
+          <Intro />
+        </TmuxProvider>
       </body>
     </html>
   );
