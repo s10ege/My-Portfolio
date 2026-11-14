@@ -66,9 +66,12 @@ export async function Fastfetch() {
   const contributions = await getContributions();
 
   return (
-    <div className="flex gap-[6ch] whitespace-pre leading-[1.25]">
+    // Fits the Main Pane width: full logo when there is room, a half-size logo on mid widths,
+    // and no logo (like `fastfetch --logo none`) on narrow panes.
+    <div className="@container">
+    <div className="flex gap-[3ch] whitespace-pre leading-[1.25] @min-[110ch]:gap-[6ch]">
       <div
-        className="pl-[2ch] pt-[2.5em] text-[var(--t-green)] [text-shadow:0.6px_0_currentColor,-0.6px_0_currentColor,0_0.6px_currentColor,0_-0.6px_currentColor]"
+        className="hidden pl-[2ch] pt-[2.5em] text-[0.5em] text-[var(--t-green)] [text-shadow:0.6px_0_currentColor,-0.6px_0_currentColor,0_0.6px_currentColor,0_-0.6px_currentColor] @min-[82ch]:block @min-[110ch]:text-[1em]"
         aria-hidden
       >
         {LOGO}
@@ -114,6 +117,7 @@ export async function Fastfetch() {
           ]}
         />
       </div>
+    </div>
     </div>
   );
 }
