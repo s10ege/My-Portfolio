@@ -27,7 +27,7 @@ export function Keybindings() {
   const router = useRouter();
   const pathname = usePathname();
   const tmux = useTmux();
-  const lastSide = useRef<PaneId>("whoami");
+  const lastSide = useRef<PaneId>("graph");
   const prefix = useRef(false);
   // Latest values for the single stable listener.
   const live = useRef({ router, pathname, tmux });

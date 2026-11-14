@@ -9,9 +9,7 @@ import { HOST, SESSION_NAME, WINDOWS, windowForPath } from "./windows";
 // Pane titles for the phone-only second status line (tmux `status 2`).
 const PANES: [PaneId, string][] = [
   ["main", "main"],
-  ["whoami", "whoami"],
-  ["gitlog", "graph"],
-  ["ls", "ls"],
+  ["graph", "graph"],
 ];
 
 export function StatusBar() {

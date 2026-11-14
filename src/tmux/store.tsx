@@ -4,9 +4,9 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { DEFAULT_THEME_ID, THEMES, THEME_STORAGE_KEY } from "./themes";
 
-export type PaneId = "main" | "whoami" | "gitlog" | "ls";
+export type PaneId = "main" | "graph";
 /** Spatial order for focus moves: main is left, side panes stack top to bottom on the right. */
-export const SIDE_PANES: PaneId[] = ["whoami", "gitlog", "ls"];
+export const SIDE_PANES: PaneId[] = ["graph"];
 
 interface TmuxState {
   focusedPane: PaneId;

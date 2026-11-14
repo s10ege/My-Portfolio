@@ -1,16 +1,15 @@
 import Link from "next/link";
-import { siteConfig } from "@/data/site";
 import { getAllProjects } from "@/lib/mdx";
 import { Cmd } from "@/tmux/SidePanes";
 import { Fastfetch } from "@/tmux/Fastfetch";
 import "@/tmux/glow.css";
 
-// The home Window is a shell session: fastfetch, then the README and now.md rendered by glow.
+// The home Window is a short shell session: fastfetch, then one compact README.
 export default function HomePage() {
   const featured = getAllProjects().slice(0, 3);
 
   return (
-    <div className="flex flex-col gap-[1.5em]">
+    <div className="flex flex-col gap-[1em]">
       <section>
         <Cmd>fastfetch</Cmd>
         <Fastfetch />
@@ -18,23 +17,9 @@ export default function HomePage() {
 
       <section>
         <Cmd>glow README.md</Cmd>
-        <article className="glow mt-[1em]">
-          <h1>README</h1>
-          <h2>{siteConfig.name}</h2>
-          <p>
-            Computer Systems Engineering graduate (BEng Hons, 2:1) from Brunel,
-            based in London. I build software from microcontrollers to machine
-            learning.
-          </p>
+        <article className="glow mt-[1em] [&>*+*]:!mt-[1em]">
           <h3>Featured</h3>
           <table>
-            <thead>
-              <tr>
-                <th>project</th>
-                <th>year</th>
-                <th>stack</th>
-              </tr>
-            </thead>
             <tbody>
               {featured.map((p) => (
                 <tr key={p.slug}>
@@ -47,30 +32,15 @@ export default function HomePage() {
               ))}
             </tbody>
           </table>
-          <ul>
-            <li>
-              <Link href="/projects">projects</Link> - all case studies
-            </li>
-            <li>
-              <Link href="/resume">resume</Link> - education, experience, skills
-            </li>
-            <li>
-              <Link href="/contact">contact</Link> - get in touch
-            </li>
-          </ul>
-        </article>
-      </section>
-
-      <section>
-        <Cmd>glow now.md</Cmd>
-        <article className="glow mt-[1em]">
-          <h1>now</h1>
+          <h3>Now</h3>
           <ul>
             <li>Looking for graduate software engineering roles in London.</li>
             <li>Running KuyumApp in production at a jewellery shop.</li>
-            <li>Rebuilding this site as a copy of my tmux setup.</li>
           </ul>
-          <p className="glow-dim">updated November 2026</p>
+          <p>
+            <Link href="/projects">projects</Link> · <Link href="/resume">resume</Link> ·{" "}
+            <Link href="/contact">contact</Link>
+          </p>
         </article>
       </section>
     </div>

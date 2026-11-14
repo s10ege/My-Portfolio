@@ -4,9 +4,7 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useTmux, type PaneId } from "./store";
 
-type Side = { whoami: React.ReactNode; gitlog: React.ReactNode; ls: React.ReactNode };
-
-const SIDE: (keyof Side)[] = ["whoami", "gitlog", "ls"];
+type Side = { graph: React.ReactNode };
 
 export function Panes({ main, side }: { main: React.ReactNode; side: Side }) {
   const { focusedPane, setFocusedPane, zoomed } = useTmux();
@@ -42,26 +40,14 @@ export function Panes({ main, side }: { main: React.ReactNode; side: Side }) {
     );
   }
 
-  // Shared borders: each side pane owns the vertical line on its left and the
-  // horizontal line on its top, blue when it or its neighbour is focused.
+  // Two panes side by side: the shared border always touches the focused pane, so it is blue.
   // Phones (max-md) always behave as zoomed: only the focused pane is shown, via CSS so
   // the server render is already correct.
   const onMain = focusedPane === "main";
   return (
     <div className="flex min-h-0 flex-1">
       {pane("main", main, `basis-3/5 shrink-0 grow-0 max-md:basis-full ${onMain ? "" : "max-md:hidden"}`, { id: "main-pane" })}
-      <div className={`flex min-h-0 min-w-0 flex-1 flex-col ${onMain ? "max-md:hidden" : ""}`}>
-        {SIDE.map((id, i) => {
-          const left = focusedPane === "main" || focusedPane === id ? "border-l-t-blue" : "border-l-t-brightblack";
-          const top = i > 0 && (focusedPane === id || focusedPane === SIDE[i - 1]) ? "border-t-t-blue" : "border-t-t-brightblack";
-          const mobile = focusedPane === id ? "max-md:border-0" : "max-md:hidden";
-          return pane(
-            id,
-            side[id],
-            `flex-1 basis-0 border-l ${left} ${i > 0 ? `border-t ${top}` : ""} ${mobile}`,
-          );
-        })}
-      </div>
+      {pane("graph", side.graph, `flex-1 border-l border-l-t-blue max-md:border-0 ${onMain ? "max-md:hidden" : ""}`)}
     </div>
   );
 }

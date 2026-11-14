@@ -1,31 +1,9 @@
-import Link from "next/link";
 import { siteConfig } from "@/data/site";
-import { getAllProjects } from "@/lib/mdx";
 
 export function Cmd({ children }: { children: string }) {
   return (
     <div>
       <span className="text-[var(--t-green)]">~</span> <span className="text-[var(--t-blue)]">%</span> {children}
-    </div>
-  );
-}
-
-const link = "text-[var(--t-cyan)] underline";
-
-export function Whoami() {
-  const { links } = siteConfig;
-  return (
-    <div className="whitespace-pre-wrap break-words">
-      <Cmd>whoami</Cmd>
-      <div>{siteConfig.name}</div>
-      <div>Software Developer</div>
-      <div className="text-[var(--t-brightblack)]">Computer Systems Eng. grad</div>
-      <div>London</div>
-      <div>
-        <a className={link} href={links.github}>github</a>{" "}
-        <a className={link} href={links.linkedin}>linkedin</a>{" "}
-        <a className={link} href={links.email}>email</a>
-      </div>
     </div>
   );
 }
@@ -127,22 +105,6 @@ export async function ContribGraph() {
           {[0, 1, 2, 3, 4].map((l) => <Cell key={l} level={l} />)}
           <span className="text-[var(--t-brightblack)]"> More</span>
         </span>
-      </div>
-    </div>
-  );
-}
-
-export function LsProjects() {
-  const projects = getAllProjects();
-  return (
-    <div>
-      <Cmd>ls ~/projects</Cmd>
-      <div className="flex flex-wrap gap-x-[2ch]">
-        {projects.map((p) => (
-          <Link key={p.slug} href={`/projects/${p.slug}`} className="font-bold text-[var(--t-blue)]">
-            {p.slug}
-          </Link>
-        ))}
       </div>
     </div>
   );
