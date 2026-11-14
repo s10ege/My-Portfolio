@@ -30,29 +30,90 @@ export function Whoami() {
   );
 }
 
-const LOG: [string, string, string][] = [
-  ["a3f9c1e", "feat(resume): graduate rewrite", "2 days ago"],
-  ["7b2d04a", "feat(home): update hero and CTA", "2 days ago"],
-  ["c81e5f3", "feat(skills): 9-category scheme", "5 days ago"],
-  ["1d6a9b7", "fix(projects): case study layout", "1 week ago"],
-  ["e402c3d", "feat(content): search engine study", "2 weeks ago"],
-  ["5fa7810", "chore: bump dependencies", "3 weeks ago"],
-  ["92b3de6", "feat(embedded): add rtos writeup", "1 month ago"],
-  ["0c4e7a2", "fix(site): canonical url", "1 month ago"],
-  ["b7195d8", "feat(contact): add form", "2 months ago"],
-  ["3e8a0f4", "initial commit", "3 months ago"],
-];
+interface Day { date: string; level: number }
 
-export function GitLog() {
+// Public contribution calendar from the GitHub profile, refreshed hourly.
+async function getContributions(): Promise<{ days: Day[]; total: string } | null> {
+  try {
+    const res = await fetch(`https://github.com/users/${siteConfig.githubUsername}/contributions`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return null;
+    const html = await res.text();
+    const days = [...html.matchAll(/data-date="([\d-]+)"[^>]*data-level="(\d)"/g)]
+      .map(([, date, level]) => ({ date, level: Number(level) }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+    const total = html.match(/([\d,]+)\s+contributions?\s+in the last year/)?.[1] ?? "0";
+    return days.length ? { days, total } : null;
+  } catch {
+    return null;
+  }
+}
+
+const LEVEL_COLOR = [
+  "var(--t-selection)",
+  "color-mix(in srgb, var(--t-green) 40%, var(--t-bg))",
+  "color-mix(in srgb, var(--t-green) 60%, var(--t-bg))",
+  "color-mix(in srgb, var(--t-green) 80%, var(--t-bg))",
+  "var(--t-green)",
+];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function Cell({ level }: { level: number }) {
+  // One terminal cell per day: a square filling most of a 1ch cell, like a block glyph.
   return (
-    <div className="whitespace-nowrap">
-      <Cmd>git log --oneline</Cmd>
-      {LOG.map(([hash, msg, when]) => (
-        <div key={hash}>
-          <span className="text-[var(--t-yellow)]">{hash}</span> {msg}{" "}
-          <span className="text-[var(--t-brightblack)]">({when})</span>
+    <span
+      className="inline-block h-[0.8ch] w-[0.8ch] mr-[0.2ch] align-middle"
+      style={{ background: LEVEL_COLOR[level] }}
+    />
+  );
+}
+
+export async function ContribGraph() {
+  const data = await getContributions();
+  if (!data) {
+    return (
+      <div>
+        <Cmd>gh graph</Cmd>
+        <div className="text-[var(--t-red)]">failed to fetch contributions</div>
+      </div>
+    );
+  }
+
+  // Columns are weeks (Sunday first), rows are weekdays, like the profile calendar.
+  const pad = new Date(data.days[0].date + "T00:00:00Z").getUTCDay();
+  const cells: (Day | null)[] = [...Array(pad).fill(null), ...data.days];
+  const weeks: (Day | null)[][] = [];
+  for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
+
+  // Month label above the first week that starts in that month.
+  const label = Array(weeks.length).fill(" ");
+  let lastMonth = -1;
+  weeks.forEach((w, i) => {
+    const first = w.find(Boolean);
+    const m = first ? Number(first.date.slice(5, 7)) - 1 : -1;
+    if (m !== lastMonth && i + 3 <= weeks.length) {
+      MONTHS[m].split("").forEach((c, j) => (label[i + j] = c));
+      lastMonth = m;
+    }
+  });
+
+  return (
+    <div className="whitespace-pre leading-[1.15]">
+      <Cmd>gh graph</Cmd>
+      <div className="text-[var(--t-brightblack)]">{"    " + label.join("")}</div>
+      {[0, 1, 2, 3, 4, 5, 6].map((d) => (
+        <div key={d}>
+          <span className="text-[var(--t-brightblack)]">{["    ", "Mon ", "    ", "Wed ", "    ", "Fri ", "    "][d]}</span>
+          {weeks.map((w, i) => (w[d] ? <Cell key={i} level={w[d]!.level} /> : " "))}
         </div>
       ))}
+      <div className="mt-[0.5em]">
+        {data.total} contributions in the last year{"  "}
+        <span className="text-[var(--t-brightblack)]">Less </span>
+        {[0, 1, 2, 3, 4].map((l) => <Cell key={l} level={l} />)}
+        <span className="text-[var(--t-brightblack)]"> More</span>
+      </div>
     </div>
   );
 }

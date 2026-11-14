@@ -6,7 +6,7 @@ import { themeBootScript, themeCss } from "@/tmux/themes";
 import { TmuxProvider } from "@/tmux/store";
 import { StatusBar } from "@/tmux/StatusBar";
 import { Panes } from "@/tmux/Panes";
-import { Whoami, GitLog, LsProjects } from "@/tmux/SidePanes";
+import { Whoami, ContribGraph, LsProjects } from "@/tmux/SidePanes";
 import { Keybindings } from "@/tmux/Keybindings";
 import { KeysPopup } from "@/tmux/KeysPopup";
 import { Intro } from "@/tmux/Intro";
@@ -60,7 +60,7 @@ export default function RootLayout({
             <StatusBar />
             <Panes
               main={children}
-              side={{ whoami: <Whoami />, gitlog: <GitLog />, ls: <LsProjects /> }}
+              side={{ whoami: <Whoami />, gitlog: <ContribGraph />, ls: <LsProjects /> }}
             />
           </div>
           <KeysPopup />
