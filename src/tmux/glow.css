@@ -1,0 +1,92 @@
+/* Mimics `glow` (charmbracelet) rendering markdown in a terminal. */
+.glow {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  max-width: 80ch;
+  line-height: 1.5;
+  color: var(--t-fg);
+  overflow-wrap: break-word;
+}
+.glow > * + * { margin-top: 1.5em; }
+.glow h1 {
+  display: inline-block;
+  padding: 0 1ch;
+  font-weight: 700;
+  color: var(--t-black);
+  background: var(--t-blue);
+}
+.glow h2, .glow h3, .glow h4 {
+  font-weight: 700;
+  color: var(--t-blue);
+}
+.glow h3, .glow h4 { font-weight: 400; }
+.glow h2::before { content: "## "; }
+.glow h3::before { content: "### "; }
+.glow h4::before { content: "#### "; }
+.glow ul, .glow ol { padding-left: 0; }
+.glow ul > li, .glow ol > li { position: relative; }
+.glow ul > li { list-style: none; padding-left: 2ch; }
+.glow ul > li::before { content: "• "; position: absolute; left: 0; }
+.glow ol { list-style: decimal; padding-left: 3ch; }
+.glow li > ul, .glow li > ol { margin-top: 0; }
+.glow code {
+  color: var(--t-red);
+  background: var(--t-selection);
+  padding: 0 1ch;
+}
+.glow pre {
+  padding: 1.5em 2ch;
+  background: var(--t-selection);
+  overflow-x: auto;
+  white-space: pre;
+}
+.glow pre code { padding: 0; color: var(--t-orange); background: none; }
+.glow a { color: var(--t-cyan); text-decoration: underline; }
+.glow blockquote {
+  padding-left: 2ch;
+  position: relative;
+  color: var(--t-brightblack);
+}
+.glow blockquote::before {
+  content: "│";
+  position: absolute;
+  left: 0;
+  color: var(--t-brightblack);
+}
+.glow hr {
+  border: 0;
+  height: 1.5em;
+  overflow: hidden;
+  color: var(--t-brightblack);
+}
+.glow hr::before { content: "────────────────────────────────────────────────────────────────────────────────"; white-space: nowrap; }
+.glow strong { font-weight: 700; }
+.glow em { font-style: italic; }
+.glow table { border-collapse: collapse; }
+.glow th { font-weight: 700; text-align: left; border-bottom: 1px solid var(--t-brightblack); }
+.glow th, .glow td { padding: 0 1ch; }
+.glow .glow-dim { color: var(--t-brightblack); }
+.glow input, .glow textarea {
+  display: block;
+  width: 100%;
+  font: inherit;
+  color: var(--t-fg);
+  background: var(--t-selection);
+  border: 0;
+  border-radius: 0;
+  padding: 0 1ch;
+  outline: 0;
+}
+.glow textarea { resize: none; }
+.glow input:focus, .glow textarea:focus { outline: 1px solid var(--t-blue); }
+.glow button {
+  font: inherit;
+  color: var(--t-black);
+  background: var(--t-blue);
+  border: 0;
+  border-radius: 0;
+  padding: 0 1ch;
+  cursor: pointer;
+}
+.glow button:disabled { background: var(--t-brightblack); cursor: default; }
+.glow-section > * + * { margin-top: 1.5em; }
+.glow-section { margin-top: 1.5em; }

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getAllProjects } from "@/lib/mdx";
-import { ProjectCard } from "@/components/ProjectCard";
 import { siteConfig } from "@/data/site";
+import "@/tmux/glow.css";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -12,31 +13,32 @@ export default function ProjectsPage() {
   const projects = getAllProjects();
 
   return (
-    <div className="mx-auto max-w-5xl px-6 pt-16 pb-20 sm:pt-20">
-      <header className="mb-14">
-        <p className="mb-4 font-mono text-xs text-accent">
-          <span className="text-accent/60">{"// "}</span>work
-        </p>
-        <h1 className="text-4xl font-semibold tracking-tight text-fg sm:text-5xl">
-          Projects.
-        </h1>
-        <p className="mt-5 max-w-xl text-fg-muted leading-relaxed">
-          Detailed case studies covering the problem, approach, architecture,
-          and learnings from each project.
-        </p>
-      </header>
-
+    <article className="glow">
+      <h1>Projects</h1>
       {projects.length === 0 ? (
-        <p className="font-mono text-sm text-fg-dim">
-          {"// no projects yet — check back soon"}
-        </p>
+        <p>No projects yet.</p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Project</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {projects.map((p) => (
+              <tr key={p.slug}>
+                <td>{p.date}</td>
+                <td>
+                  <Link href={`/projects/${p.slug}`}>{p.title}</Link>
+                </td>
+                <td>{p.role}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
-    </div>
+    </article>
   );
 }

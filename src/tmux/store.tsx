@@ -36,6 +36,8 @@ export function TmuxProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const t = document.documentElement.dataset.theme;
+    // Sync from the pre-paint boot script; server render must use the default.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (t && THEMES.some((x) => x.id === t)) setThemeIdState(t);
   }, []);
 
